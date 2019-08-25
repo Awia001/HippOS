@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.8)
 project(HippOS)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_COMPILER "clang")
+set(CMAKE_CXX_COMPILER "i686-elf-gcc")
 set(TARGET "x86_64-pc-none-elf")
 set(LINKER_SCRIPT "src/linker.ld")
-set(CXX_FLAGS "-target ${TARGET} -ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra  -lgcc -nostdlib")
+set(CXX_FLAGS "-ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra  -lgcc -nostdlib")
 file(GLOB cpp_sources src/*.cpp)
 file(GLOB asm_sources src/*.asm)
 
