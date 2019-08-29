@@ -1,15 +1,12 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10.2)
+set(CMAKE_TOOLCHAIN_FILE cmake/i686-elf-toolchain.cmake)
+
 project(HippOS)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_COMPILER "i686-elf-gcc")
-set(TARGET "x86_64-pc-none-elf")
 set(LINKER_SCRIPT "src/linker.ld")
-set(CXX_FLAGS "-ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra  -lgcc -nostdlib")
-file(GLOB cpp_sources src/*.cpp)
-file(GLOB asm_sources src/*.asm)
+set(CXX_FLAGS "-T ${LINKER_SCRIPT} -ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra  -lgcc -nostdlib")
+set(SOURCES src/kernel_main.c src/boot.s)
 
-add_custom_target(os.bin ALL ${CMAKE_CXX_COMPILER} ${cpp_sources} ${asm_sources} "-T" ${LINKER_SCRIPT} ${CXX_FLAGS})
-set_target_properties(os.bin PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
-#target_compile_options(os.bin ${FLAGS})
-#clang boot.asm kernel_main.c -T linker.ld -target x86_64-pc-none-elf -ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra  -lgcc -nostdlib -o os.bin
+add_executable(os.bin ${SOURCES})
+target_compile_options(os.bin PUBLIC ${FLAGS})
+#gcc boot.asm kernel_main.c -T linker.ld  -ffreestanding -fno-exceptions -fno-rtti -Wall -Wextra -nostdlib -o os.bin -lgcc
